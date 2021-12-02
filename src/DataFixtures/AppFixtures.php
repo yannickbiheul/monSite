@@ -2,15 +2,30 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Admin;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(UserPasswordHasherInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager): void
     {
+        // ADMIN
+        $admin = new Admin();
+        $admin->setUsername('yannickbiheul@outlook.fr')
+                ->setPassword('ludwigvon88');
+        $encoded = $this->encoder->hashPassword($admin, $admin->getPassword());
+        $admin->setPassword($encoded);
+        $manager->persist($admin);
+
         // DIPLOMES
         $diplome = new Diplome();
         $diplome->setTitre("BTS Développement Web et Web Mobile")
