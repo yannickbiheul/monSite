@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration Diplômes{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="min-height: 90vh;">
+        <h1 class="my-5 text-center">
+            Mes diplômes
+        </h1>
+        <div class="text-center md-3">
+            <a href="#" class="btn btn-success text-white mb-3">
+                <i class="fas fa-plus"></i> 
+                Ajouter un diplôme
+            </a>
+        </div>
+        <table class="table table-hover my-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Établissement</th>
+                    <th>Date d'obtention</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for diplome in diplomes %}
+                    <tr>
+                        <td>{{ diplome.id }}</td>
+                        <td>{{ diplome.titre }}</td>
+                        <td>{{ diplome.etablissement }}</td>
+                        <td>{{ diplome.dateObtention | date("d/m/Y") }}</td>
+                        <td>
+                            <a href="{{ path('admin_diplomes_edit', {'id': diplome.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> 
+                                Éditer
+                            </a>
+                            <a href="{{ path('admin_diplomes_delete', {'id': diplome.id}) }}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> 
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
