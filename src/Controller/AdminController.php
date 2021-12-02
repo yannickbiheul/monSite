@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Certificat;
 use App\Entity\Diplome;
+use App\Form\CertificatType;
 use App\Form\DiplomeType;
+use App\Repository\CertificatRepository;
 use App\Repository\DiplomeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -35,12 +38,15 @@ class AdminController extends AbstractController
 
     }
 
+                                                                /* DIPLOMES */
+
     /**
      * @Route("/admin/diplomes", name="admin_diplomes")
      */
     public function diplomes(DiplomeRepository $diplomeRepo)
     {
         $diplomes = $diplomeRepo->findBy([], ['dateObtention' => 'DESC']);
+
         return $this->render('admin/diplomes.html.twig', [
             'diplomes' => $diplomes,
         ]);
@@ -92,6 +98,69 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/editDiplome.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+                                                                /* CERTIFICATS */
+
+    /**
+     * @Route("/admin/certificats", name="admin_certificats")
+     */
+    public function certificats(CertificatRepository $certificatRepo)
+    {
+        $certificats = $certificatRepo->findBy([], ['dateObtention' => 'DESC']);
+         return $this->render('admin/certificats.html.twig', [
+             'certificats' => $certificats,
+         ]);
+    }
+
+    /**
+     * @Route("/admin/certificats/new", name="admin_certificats_new")
+     */
+    public function newCertificat(Request $request, EntityManagerInterface $manager)
+    {
+        $certificat = new Certificat();
+        $form = $this->createForm(CertificatType::class, $certificat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($certificat);
+            $manager->flush();
+            return $this->redirectToRoute('admin_certificats');
+        }
+
+        return $this->render('admin/newCertificat.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/certificats/{id}/delete", name="admin_certificats_delete")
+     */
+    public function deleteCertificats(Certificat $certificat, EntityManagerInterface $manager)
+    {
+        $manager->remove($certificat);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_certificats');
+    }
+
+    /**
+     * @Route("/admin/certificats/{id}/edit", name="admin_certificats_edit")
+     */
+    public function editCertificat(Certificat $certificat, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(CertificatType::class, $certificat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($certificat);
+            $manager->flush();
+            return $this->redirectToRoute('admin_certificats');
+        }
+
+        return $this->render('admin/editCertificat.html.twig', [
             'form' => $form->createView(),
         ]);
     }

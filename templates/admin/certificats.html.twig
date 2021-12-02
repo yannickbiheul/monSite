@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration Certificats{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="min-height: 90vh;">
+        <h1 class="my-5 text-center">
+            Mes certificats
+        </h1>
+        <div class="text-center md-3">
+            <a href="{{ path('admin_certificats_new') }}" class="btn btn-success text-white mb-3">
+                <i class="fas fa-plus"></i> 
+                Ajouter un certificat
+            </a>
+        </div>
+        <table class="table table-hover my-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Établissement</th>
+                    <th>Date d'obtention</th>
+                    <th>Numéro</th>
+                    <th>URL</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for certificat in certificats %}
+                    <tr>
+                        <td>{{ certificat.id }}</td>
+                        <td>{{ certificat.titre }}</td>
+                        <td>{{ certificat.etablissement }}</td>
+                        <td>{{ certificat.dateObtention | date("d/m/Y") }}</td>
+                        <td>{{ certificat.numero }}</td>
+                        <td>{{ certificat.url }}</td>
+                        <td>
+                            <a href="{{ path('admin_certificats_edit', {'id': certificat.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> 
+                                Éditer
+                            </a>
+                            <a href="{{ path('admin_certificats_delete', {'id': certificat.id}) }}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> 
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
