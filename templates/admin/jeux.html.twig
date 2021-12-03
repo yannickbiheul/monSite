@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration Pseudos Jeux Vidéo{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="min-height: 90vh;">
+        <h1 class="my-5 text-center">
+            Mes pseudos jeux vidéo
+        </h1>
+        <div class="text-center md-3">
+            <a href="{{ path('admin_jeux_new') }}" class="btn btn-success text-white mb-3">
+                <i class="fas fa-plus"></i> 
+                Ajouter un pseudo
+            </a>
+        </div>
+        <table class="table table-hover my-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Logo</th>
+                    <th>Pseudo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jeu in jeux %}
+                    <tr>
+                        <td>{{ jeu.id }}</td>
+                        <td>{{ jeu.titre }}</td>
+                        <td>{{ jeu.logo | raw }}</td>
+                        <td>{{ jeu.pseudo }}</td>
+                        <td>
+                            <a href="{{ path('admin_jeux_edit', {'id': jeu.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> 
+                                Éditer
+                            </a>
+                            <a href="{{ path('admin_jeux_delete', {'id': jeu.id}) }}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> 
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
