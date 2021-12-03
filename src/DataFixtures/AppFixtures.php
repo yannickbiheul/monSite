@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Admin;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
+use App\Entity\Experience;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -69,6 +70,34 @@ class AppFixtures extends Fixture
                     ->setNumero("UC-54c3c40a-0246-4554-b0a8-3c8ea2b4c199")
                     ->setUrl("ude.my/UC-54c3c40a-0246-4554-b0a8-3c8ea2b4c199");
         $manager->persist($certificat);
+
+        // EXPERIENCES
+        $experience = new Experience();
+        $experience->setTitre('Développeur Full-Stack')
+                    ->setEtablissement('La Belle Oreille')
+                    ->setRoles('Développement Full-Stack avec Symfony 5.
+                    Utilisation de EasyAdmin, Webpack Encore et Bootstrap.
+                    Tests unitaires, intégration continue avec les actions GitHub.')
+                    ->setDateDebut(new \DateTime("2021-04-26"))
+                    ->setDateFin(new \DateTime("2021-07-02"))
+                    ->setLien('assets/images/presentation_belle_oreille.pdf');
+        $manager->persist($experience);
+
+        $experience = new Experience();
+        $experience->setTitre('Opérateur / Pilote de production')
+                    ->setEtablissement('Livbag Pont-de-Buis')
+                    ->setRoles('Montage de pièces sur ligne de production, travail en équipe, réalisation d’étiquetages, contrôles et suivi qualité et process, utilisation du logiciel « L2L » pour le suivi de production.')
+                    ->setDateDebut(new \DateTime("2003-03-10"))
+                    ->setDateFin(new \DateTime("2020-10-22"));
+        $manager->persist($experience);
+
+        $experience = new Experience();
+        $experience->setTitre('Vendeur Conseil')
+                    ->setEtablissement('Conforama Quimper')
+                    ->setRoles('Accueil client et vente d’équipements électroménagers, suivi client et service après-vente, travail en équipe et participation à la vie du magasin (inventaires, réassorts, tenue et organisation du magasin).')
+                    ->setDateDebut(new \DateTime("2002-12-17"))
+                    ->setDateFin(new \DateTime("2002-12-28"));
+        $manager->persist($experience);
 
         $manager->flush();
     }
