@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
 use App\Entity\Experience;
+use App\Entity\Projet;
 use App\Form\CertificatType;
 use App\Form\DiplomeType;
 use App\Form\ExperienceType;
+use App\Form\ProjetType;
 use App\Repository\CertificatRepository;
 use App\Repository\DiplomeRepository;
 use App\Repository\ExperienceRepository;
+use App\Repository\ProjetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -228,6 +231,70 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/editExperience.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // PROJETS
+
+    /**
+     * @Route("/admin/projets", name="admin_projets")
+     */
+    public function projets(ProjetRepository $projetRepo)
+    {
+        $projets = $projetRepo->findBy([], ['id' => 'DESC']);
+
+        return $this->render('admin/projets.html.twig', [
+            'projets' => $projets,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/projets/new", name="admin_projets_new")
+     */
+    public function newProjet(Request $request, EntityManagerInterface $manager)
+    {
+        $projet = new Projet();
+        $form = $this->createForm(ProjetType::class, $projet);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($projet);
+            $manager->flush();
+            return $this->redirectToRoute('admin_projets');
+        }
+
+        return $this->render('admin/newProjet.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/projets/{id}/delete", name="admin_projets_delete")
+     */
+    public function deleteProjet(Projet $projet, EntityManagerInterface $manager)
+    {
+        $manager->remove($projet);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_projets');
+    }
+
+    /**
+     * @Route("/admin/projets/{id}/edit", name="admin_projets_edit")
+     */
+    public function editProjet(Projet $projet, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(ProjetType::class, $projet);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($projet);
+            $manager->flush();
+            return $this->redirectToRoute('admin_projets');
+        }
+
+        return $this->render('admin/editProjet.html.twig', [
             'form' => $form->createView(),
         ]);
     }
