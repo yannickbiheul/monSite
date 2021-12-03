@@ -6,7 +6,9 @@ use App\Entity\Admin;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
 use App\Entity\Experience;
+use App\Entity\Jeu;
 use App\Entity\Projet;
+use App\Entity\Social;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -107,6 +109,20 @@ class AppFixtures extends Fixture
                 ->setImage('deskad.png')
                 ->setUrl('https://deskad.fr/');
         $manager->persist($projet);
+
+        // RESEAUX SOCIAUX
+        $social = new Social();
+        $social->setTitre('Facbook')
+                ->setUrl('https://www.facebook.com/yannickbiheul')
+                ->setLogo('<i class="fab fa-facebook-f"></i>');
+        $manager->persist($social);
+
+        // JEUX
+        $jeu = new Jeu();
+        $jeu->setTitre('Playstation')
+            ->setLogo('<i class="fab fa-playstation"></i>')
+            ->setPseudo('Le_Bok_29');
+        $manager->persist($jeu);
 
         $manager->flush();
     }
