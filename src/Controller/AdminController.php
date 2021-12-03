@@ -5,16 +5,19 @@ namespace App\Controller;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
 use App\Entity\Experience;
+use App\Entity\Jeu;
 use App\Entity\Projet;
 use App\Entity\Social;
 use App\Form\CertificatType;
 use App\Form\DiplomeType;
 use App\Form\ExperienceType;
+use App\Form\JeuType;
 use App\Form\ProjetType;
 use App\Form\SocialType;
 use App\Repository\CertificatRepository;
 use App\Repository\DiplomeRepository;
 use App\Repository\ExperienceRepository;
+use App\Repository\JeuRepository;
 use App\Repository\ProjetRepository;
 use App\Repository\SocialRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -362,6 +365,70 @@ class AdminController extends AbstractController
         }
     
         return $this->render('admin/editSocial.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // JEUX
+
+    /**
+     * @Route("/admin/jeux", name="admin_jeux")
+     */
+    public function jeux(JeuRepository $jeuRepo)
+    {
+        $jeux = $jeuRepo->findBy([], ['titre' => 'ASC']);
+
+        return $this->render('admin/jeux.html.twig', [
+            'jeux' => $jeux,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/jeux/new", name="admin_jeux_new")
+     */
+    public function newJeu(Request $request, EntityManagerInterface $manager)
+    {
+        $jeu = new Jeu();
+        $form = $this->createForm(JeuType::class, $jeu);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($jeu);
+            $manager->flush();
+            return $this->redirectToRoute('admin_jeux');
+        }
+    
+        return $this->render('admin/newJeu.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/jeux/{id}/delete", name="admin_jeux_delete")
+     */
+    public function deleteJeu(Jeu $jeu, EntityManagerInterface $manager)
+    {
+        $manager->remove($jeu);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_jeux');
+    }
+
+    /**
+     * @Route("/admin/jeux/{id}/edit", name="admin_jeux_edit")
+     */
+    public function editJeu(Jeu $jeu, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(JeuType::class, $jeu);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($jeu);
+            $manager->flush();
+            return $this->redirectToRoute('admin_jeux');
+        }
+    
+        return $this->render('admin/editJeu.html.twig', [
             'form' => $form->createView(),
         ]);
     }
