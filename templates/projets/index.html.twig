@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5 text-center">Diplômes</h1>
+
+        <div class="row">
+
+            {% for projet in projets %}
+                <div class="col-md-4 mt-4 mb-4 d-flex justify-content-center">
+                    <div class="card" style="width: 18rem;">
+                        <img src="/assets/images/{{ projet.image }}" class="card-img-top" alt="{{ projet.titre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ projet.titre }}</h5>
+                            <p class="card-text">{{ projet.description }}</p>
+                            <hr>
+                            <a href="{{ projet.url }}" target="_blank" class="btn btn-primary">VOIR</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+{% endblock %}

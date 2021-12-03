@@ -6,6 +6,7 @@ use App\Entity\Admin;
 use App\Entity\Certificat;
 use App\Entity\Diplome;
 use App\Entity\Experience;
+use App\Entity\Projet;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -98,6 +99,14 @@ class AppFixtures extends Fixture
                     ->setDateDebut(new \DateTime("2002-12-17"))
                     ->setDateFin(new \DateTime("2002-12-28"));
         $manager->persist($experience);
+
+        // PROJETS
+        $projet = new Projet();
+        $projet->setTitre('Deskad')
+                ->setDescription('Un blog en PHP sans Frameworks')
+                ->setImage('deskad.png')
+                ->setUrl('https://deskad.fr/');
+        $manager->persist($projet);
 
         $manager->flush();
     }
