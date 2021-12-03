@@ -28,6 +28,7 @@ class DiplomeType extends AbstractType
                 ]
             ])
             ->add('dateObtention', DateType::class, [
+                'widget' => 'single_text',
                 'label' => 'Date du diplôme',
                 'attr' => [
                     'placeholder' => 'Date'

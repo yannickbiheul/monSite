@@ -18,6 +18,11 @@
                             <p class="card-text">{{ experience.etablissement }}</p>
                             <hr>
                             <p class="card-text">{{ experience.roles }}</p>
+
+                            {% if experience.lien %}
+                                <a href="#" target ="_blank" class="btn btn-primary">VOIR</a>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>

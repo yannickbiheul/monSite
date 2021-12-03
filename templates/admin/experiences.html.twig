@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration Expériences{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="min-height: 90vh;">
+        <h1 class="my-5 text-center">
+            Mes expériences
+        </h1>
+        <div class="text-center md-3">
+            <a href="{{ path('admin_experiences_new') }}" class="btn btn-success text-white mb-3">
+                <i class="fas fa-plus"></i> 
+                Ajouter une expérience
+            </a>
+        </div>
+        <table class="table table-hover my-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Établissement</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for experience in experiences %}
+                    <tr>
+                        <td>{{ experience.id }}</td>
+                        <td>{{ experience.titre }}</td>
+                        <td>{{ experience.etablissement }}</td>
+                        <td>{{ experience.dateDebut | date("d/m/Y") }}</td>
+                        <td>{{ experience.dateFin | date("d/m/Y") }}</td>
+                        <td>
+                            <a href="{{ path('admin_experiences_edit', {'id': experience.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> 
+                                Éditer
+                            </a>
+                            <a href="{{ path('admin_experiences_delete', {'id': experience.id}) }}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> 
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
