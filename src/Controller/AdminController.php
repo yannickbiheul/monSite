@@ -2,26 +2,29 @@
 
 namespace App\Controller;
 
-use App\Entity\Certificat;
-use App\Entity\Diplome;
-use App\Entity\Experience;
 use App\Entity\Jeu;
+use App\Form\JeuType;
 use App\Entity\Projet;
 use App\Entity\Social;
-use App\Form\CertificatType;
-use App\Form\DiplomeType;
-use App\Form\ExperienceType;
-use App\Form\JeuType;
+use App\Entity\Diplome;
 use App\Form\ProjetType;
 use App\Form\SocialType;
-use App\Repository\CertificatRepository;
-use App\Repository\DiplomeRepository;
-use App\Repository\ExperienceRepository;
+use App\Form\DiplomeType;
+use App\Entity\Certificat;
+use App\Entity\Experience;
+use App\Entity\Candidature;
+use App\Form\CertificatType;
+use App\Form\ExperienceType;
+use App\Form\CandidatureType;
 use App\Repository\JeuRepository;
 use App\Repository\ProjetRepository;
 use App\Repository\SocialRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DiplomeRepository;
 use Doctrine\Persistence\ObjectManager;
+use App\Repository\CertificatRepository;
+use App\Repository\ExperienceRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CandidatureRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -369,7 +372,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // JEUX
+                                                                // JEUX
 
     /**
      * @Route("/admin/jeux", name="admin_jeux")
@@ -429,6 +432,70 @@ class AdminController extends AbstractController
         }
     
         return $this->render('admin/editJeu.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+                                                                // CANDIDATURES
+
+    /**
+     * @Route("/admin/candidatures", name="admin_candidatures")
+     */
+    public function candidatures(CandidatureRepository $candidatureRepo)
+    {
+        $candidatures = $candidatureRepo->findBy([], ['date' => 'DESC']);
+
+        return $this->render('admin/candidatures.html.twig', [
+            'candidatures' => $candidatures,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/candidatures/new", name="admin_candidatures_new")
+     */
+    public function newCandidature(Request $request, EntityManagerInterface $manager)
+    {
+        $candidature = new Candidature();
+        $form = $this->createForm(CandidatureType::class, $candidature);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($candidature);
+            $manager->flush();
+            return $this->redirectToRoute('admin_candidatures');
+        }
+
+        return $this->render('admin/newCandidature.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/candidatures/{id}/delete", name="admin_candidatures_delete")
+     */
+    public function deleteCandidature(Candidature $candidature, EntityManagerInterface $manager)
+    {
+        $manager->remove($candidature);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_candidatures');
+    }
+
+    /**
+     * @Route("/admin/candidatures/{id}/edit", name="admin_candidatures_edit")
+     */
+    public function editCandidature(Candidature $candidature, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(CandidatureType::class, $candidature);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($candidature);
+            $manager->flush();
+            return $this->redirectToRoute('admin_candidatures');
+        }
+
+        return $this->render('admin/editCandidature.html.twig', [
             'form' => $form->createView(),
         ]);
     }

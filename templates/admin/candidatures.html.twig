@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration Candidatures{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid" style="min-height: 90vh;">
+        <h1 class="my-5 text-center">
+            Mes candidatures
+        </h1>
+        <div class="text-center md-3">
+            <a href="{{ path('admin_candidatures_new') }}" class="btn btn-success text-white mb-3">
+                <i class="fas fa-plus"></i> 
+                Ajouter une candidature
+            </a>
+        </div>
+        <table class="table table-hover my-5">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Type de candidature</th>
+                    <th>Date</th>
+                    <th>Réponse</th>
+                    <th>Détails</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidature in candidatures %}
+
+                    {% if candidature.reponse == 'oui' %}
+                        <tr class="table-success">
+                            <td>{{ candidature.id }}</td>
+                            <td>{{ candidature.nom }}</td>
+                            <td>{{ candidature.adresse }}</td>
+                            <td>{{ candidature.typeCandidature }}</td>
+                            <td>{{ candidature.date | date("d/m/Y") }}</td>
+                            <td>{{ candidature.reponse }}</td>
+                            <td>{{ candidature.details }}</td>
+                            <td>
+                                <a href="{{ path('admin_candidatures_edit', {'id': candidature.id}) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> 
+                                    Éditer
+                                </a>
+                                <a href="{{ path('admin_candidatures_delete', {'id': candidature.id}) }}" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> 
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% elseif candidature.reponse == 'non' %}
+                        <tr class="table-danger">
+                            <td>{{ candidature.id }}</td>
+                            <td>{{ candidature.nom }}</td>
+                            <td>{{ candidature.adresse }}</td>
+                            <td>{{ candidature.typeCandidature }}</td>
+                            <td>{{ candidature.date | date("d/m/Y") }}</td>
+                            <td>{{ candidature.reponse }}</td>
+                            <td>{{ candidature.details }}</td>
+                            <td>
+                                <a href="{{ path('admin_candidatures_edit', {'id': candidature.id}) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> 
+                                    Éditer
+                                </a>
+                                <a href="{{ path('admin_candidatures_delete', {'id': candidature.id}) }}" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> 
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% elseif candidature.reponse == null %}
+                        <tr>
+                            <td>{{ candidature.id }}</td>
+                            <td>{{ candidature.nom }}</td>
+                            <td>{{ candidature.adresse }}</td>
+                            <td>{{ candidature.typeCandidature }}</td>
+                            <td>{{ candidature.date | date("d/m/Y") }}</td>
+                            <td>{{ candidature.reponse }}</td>
+                            <td>{{ candidature.details }}</td>
+                            <td>
+                                <a href="{{ path('admin_candidatures_edit', {'id': candidature.id}) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> 
+                                    Éditer
+                                </a>
+                                <a href="{{ path('admin_candidatures_delete', {'id': candidature.id}) }}" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> 
+                                    Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
