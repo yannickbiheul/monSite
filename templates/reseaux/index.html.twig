@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réseaux Sociaux{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5 text-center">Réseaux Sociaux</h1>
+
+        <div class="row">
+
+            {% for social in socials %}
+                <div class="col-md-4 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
+                    <h5>{{ social.titre }}</h5>
+                    <a href="{{ social.url }}" target="_blank" style="text-decoration: none; color: #000; font-size: 4rem;">
+                        {{ social.logo | raw }}
+                    </a>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="my-5 text-center">Jeux Vidéo</h1>
+
+        <div class="row">
+
+            {% for jeu in jeux %}
+                <div class="col-md-4 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
+                    <h5>{{ jeu.titre }}</h5>
+                    <p style="font-size: 4rem;">{{ jeu.logo | raw }}</p>
+                    <p>{{ jeu.pseudo }}</p>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+{% endblock %}
