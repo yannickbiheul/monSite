@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Certificat;
 use App\Entity\Diplome;
+use App\Entity\Experience;
 use App\Form\CertificatType;
 use App\Form\DiplomeType;
+use App\Form\ExperienceType;
 use App\Repository\CertificatRepository;
 use App\Repository\DiplomeRepository;
+use App\Repository\ExperienceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -161,6 +164,70 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/editCertificat.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+                                                                // EXPERIENCES
+
+    /**
+     * @Route("/admin/experiences", name="admin_experiences")
+     */
+    public function experiences(ExperienceRepository $experienceRepo)
+    {
+        $experiences = $experienceRepo->findBy([], ['dateFin' => 'DESC']);
+
+        return $this->render('admin/experiences.html.twig', [
+            'experiences' => $experiences,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/experiences/new", name="admin_experiences_new")
+     */
+    public function newExperience(Request $request, EntityManagerInterface $manager)
+    {
+        $experience = new Experience();
+        $form = $this->createForm(ExperienceType::class, $experience);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($experience);
+            $manager->flush();
+            return $this->redirectToRoute('admin_experiences');
+        }
+
+        return $this->render('admin/newExperience.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/experiences/{id}/delete", name="admin_experiences_delete")
+     */
+    public function deleteExperience(Experience $experience, EntityManagerInterface $manager)
+    {
+        $manager->remove($experience);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_experiences');
+    }
+
+    /**
+     * @Route("/admin/experiences/{id}/edit", name="admin_experiences_edit")
+     */
+    public function editExperience(Experience $experience, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(ExperienceType::class, $experience);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($experience);
+            $manager->flush();
+            return $this->redirectToRoute('admin_experiences');
+        }
+
+        return $this->render('admin/editExperience.html.twig', [
             'form' => $form->createView(),
         ]);
     }
