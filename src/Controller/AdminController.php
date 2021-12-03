@@ -6,14 +6,17 @@ use App\Entity\Certificat;
 use App\Entity\Diplome;
 use App\Entity\Experience;
 use App\Entity\Projet;
+use App\Entity\Social;
 use App\Form\CertificatType;
 use App\Form\DiplomeType;
 use App\Form\ExperienceType;
 use App\Form\ProjetType;
+use App\Form\SocialType;
 use App\Repository\CertificatRepository;
 use App\Repository\DiplomeRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\ProjetRepository;
+use App\Repository\SocialRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -235,7 +238,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    // PROJETS
+                                                                // PROJETS
 
     /**
      * @Route("/admin/projets", name="admin_projets")
@@ -295,6 +298,70 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/editProjet.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // SOCIALS
+
+    /**
+     * @Route("/admin/socials", name="admin_socials")
+     */
+    public function socials(SocialRepository $socialRepo)
+    {
+        $socials = $socialRepo->findBy([], ['titre' => 'ASC']);
+
+        return $this->render('admin/socials.html.twig', [
+            'socials' => $socials,
+        ]);
+    }
+
+    /**
+     * @Route("/admin/socials/new", name="admin_socials_new")
+     */
+    public function newSocial(Request $request, EntityManagerInterface $manager)
+    {
+        $social = new Social();
+        $form = $this->createForm(SocialType::class, $social);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($social);
+            $manager->flush();
+            return $this->redirectToRoute('admin_socials');
+        }
+    
+        return $this->render('admin/newSocial.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/socials/{id}/delete", name="admin_socials_delete")
+     */
+    public function deleteSocial(Social $social, EntityManagerInterface $manager)
+    {
+        $manager->remove($social);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_socials');
+    }
+
+    /**
+     * @Route("/admin/socials/{id}/edit", name="admin_socials_edit")
+     */
+    public function editSocial(Social $social, Request $request, EntityManagerInterface $manager)
+    {
+        $form = $this->createForm(SocialType::class, $social);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($social);
+            $manager->flush();
+            return $this->redirectToRoute('admin_socials');
+        }
+    
+        return $this->render('admin/editSocial.html.twig', [
             'form' => $form->createView(),
         ]);
     }

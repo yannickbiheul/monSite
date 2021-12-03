@@ -11,7 +11,7 @@
             {% for social in socials %}
                 <div class="col-md-4 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
                     <h5>{{ social.titre }}</h5>
-                    <a href="{{ social.url }}" target="_blank" style="text-decoration: none; color: #000; font-size: 4rem;">
+                    <a href="{{ social.url }}" target="_blank" style="text-decoration: none; color: #000; font-size: 3rem;">
                         {{ social.logo | raw }}
                     </a>
                 </div>
@@ -28,7 +28,7 @@
             {% for jeu in jeux %}
                 <div class="col-md-4 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center">
                     <h5>{{ jeu.titre }}</h5>
-                    <p style="font-size: 4rem;">{{ jeu.logo | raw }}</p>
+                    <p style="font-size: 3rem;">{{ jeu.logo | raw }}</p>
                     <p>{{ jeu.pseudo }}</p>
                 </div>
             {% endfor %}
