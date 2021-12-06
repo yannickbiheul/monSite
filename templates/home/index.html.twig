@@ -4,19 +4,28 @@
 
 {% block body %}
 
-    <div class="container-fluid d-flex justify-content-center align-items-center border-bottom" style="height: 400px;">
-        <div class="row">
-            <h1>BANNIERE</h1>
+    <div class="container-fluid d-flex justify-content-center align-items-center border-bottom banniere"
+         style="background-image: radial-gradient(circle at top left, rgb(53, 78, 205) 0%, rgb(53, 78, 205) 3%,rgb(53, 72, 194) 3%, rgb(53, 72, 194) 20%,rgb(54, 65, 183) 20%, rgb(54, 65, 183) 65%,rgb(54, 59, 172) 65%, rgb(54, 59, 172) 72%,rgb(55, 53, 160) 72%, rgb(55, 53, 160) 79%,rgb(55, 47, 149) 79%, rgb(55, 47, 149) 82%,rgb(56, 40, 138) 82%, rgb(56, 40, 138) 90%,rgb(56, 34, 127) 90%, rgb(56, 34, 127) 100%);">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col text-center">
+                <h1 class="title text-white">Yannick Biheul</h1>
+                <p class="title-p text-white">Développement Web</p>
+                <a href="/assets/images/CV.pdf" class="btn btn-primary" download>Télécharger CV</a>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <div class="row" style="height: 400px;">
+        <div class="row mt-4 mb-4" style="height: 400px;">
             <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <h2>Photo</h2>
+                <img src="/assets/images/moi.jpg" class="img-fluid img-thumbnail" width="300px">
             </div>
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <h2>Présentation</h2>
+            <div class="text-presentation col-md-6 d-flex flex-column justify-content-center text-center">
+                <p>Je m'appelle Yannick Biheul, j'ai 39 ans et j'habite à Quimper, dans le Finistère.</p>
+                <p>Je suis interessé par les nouvelles technologies, le cinéma, la musique, la lecture et les jeux vidéo.</p>
+                <p>Après un BAC PRO de maintenance en électroménager, je me suis dirigé dans la vente en passant un BEP à l'Afpa de Lorient, pour ensuite travailler pendant 17 ans chez un équipementier automobile en tant qu'opérateur et pilote de production.</p>
+                <p>Attiré par le côté création, interaction et automatisation du développement web, je décide d'entamer une reconversion dans ce domaine en 2020.</p>
+                <p>Je recherche aujourd'hui une alternance pour la formation BAC+4 "Concepteur Développeur d'Applications" avec l'école ENI de Quimper.</p>
             </div>
         </div>
     </div>
